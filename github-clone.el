@@ -53,6 +53,8 @@
   :type 'directory
   :group 'github-clone)
 
+(defun github-clone-default-directory ()
+  (or github-clone-default-directory default-directory))
 
 (defun github-clone-fork (repo)
   (oref (gh-repos-fork (gh-repos-api "api") repo) :data))
@@ -186,7 +188,7 @@ DIRECTORY.  Then it prompts to fork the repository and add a
 remote named after the github username to the fork."
   (interactive
    (list (read-from-minibuffer "Url or User/Repo: ")
-         (read-directory-name "Directory: " github-clone-default-directory nil)))
+         (read-directory-name "Directory: " (github-clone-default-directory) nil)))
   (let* ((name (github-clone-repo-name user-repo-url))
          (repo (github-clone-info (car name) (cdr name))))
     (unless (file-directory-p directory)
